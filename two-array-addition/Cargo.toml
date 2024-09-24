@@ -1,0 +1,11 @@
+[package]
+name = "two-array-addition"
+version = "0.1.0"
+edition = "2021"
+
+build = "build.rs"
+
+[dependencies]
+metal = { version = "=0.28.0" }
+thiserror = "1.0"
+objc = "0.2.7"
