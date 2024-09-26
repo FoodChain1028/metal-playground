@@ -34,10 +34,10 @@ fn main() {
         buffer_alloc_duration
     );
 
-    println!("Executing kernel 1...");
+    println!("Executing 1st kernel (1)...");
     let start_1 = Instant::now();
     let result_1 = execute_kernel(
-        "two_array_addition_2",
+        "two_array_addition_1",
         &state,
         &buffer_a,
         &buffer_b,
@@ -45,10 +45,10 @@ fn main() {
     );
     let duration_1 = start_1.elapsed();
 
-    println!("Executing kernel 2...");
+    println!("Executing 1st kernel (2)...");
     let start_2 = Instant::now();
     let result_2 = execute_kernel(
-        "two_array_addition_2",
+        "two_array_addition_1",
         &state,
         &buffer_a,
         &buffer_b,
@@ -56,12 +56,38 @@ fn main() {
     );
     let duration_2 = start_2.elapsed();
 
+    println!("Executing 2nd kernel (1)...");
+    let start_3 = Instant::now();
+    let result_3 = execute_kernel(
+        "two_array_addition_2",
+        &state,
+        &buffer_a,
+        &buffer_b,
+        &buffer_c,
+    );
+    let duration_3 = start_3.elapsed();
+
+    println!("Executing 2nd kernel (2)...");
+    let start_4 = Instant::now();
+    let result_4 = execute_kernel(
+        "two_array_addition_2",
+        &state,
+        &buffer_a,
+        &buffer_b,
+        &buffer_c,
+    );
+    let duration_4 = start_4.elapsed();
+
     println!("Duration expected: {:?}", duration_expected);
-    println!("Duration for kernel 1: {:?}", duration_1);
-    println!("Duration for kernel 2: {:?}", duration_2);
+    println!("Duration for 1st kernel (1): {:?}", duration_1);
+    println!("Duration for 1st kernel (2): {:?}", duration_2);
+    println!("Duration for 2nd kernel (1): {:?}", duration_3);
+    println!("Duration for 2nd kernel (2): {:?}", duration_4);
 
     assert_eq!(result_1, expected_output);
     assert_eq!(result_2, expected_output);
+    assert_eq!(result_3, expected_output);
+    assert_eq!(result_4, expected_output);
     println!("You have successfully run the kernels!");
 }
 
