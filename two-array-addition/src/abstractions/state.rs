@@ -98,18 +98,9 @@ impl MetalState {
     /// SAFETY: this function uses an unsafe function for retrieveing the data, if the buffer's
     /// contents don't match the specified `T`, expect undefined behaviour. Always make sure the
     /// buffer you are retreiving from holds data of type `T`.
-    pub fn retrieve_contents<T: Clone>(buffer: &Buffer) -> Vec<T> {
-        let ptr = buffer.contents() as *const T;
+    pub fn retrieve_contents<T>(buffer: &Buffer) -> &[T] {
+        // TODO: need to check if this is dangerous
         let len = buffer.length() as usize / mem::size_of::<T>();
-        let mut contents = Vec::with_capacity(len);
-        for i in 0..len {
-            // 1. Read possibly unaligned data producing a bitwise copy
-            let val = unsafe { ptr.add(i).read_unaligned() };
-            // 2. Clone into the vector to avoid both `contents` and `buffer` dropping it
-            contents.push(val.clone());
-            // 3. Forget the bitwise copy to avoid both `val` and `buffer` dropping it
-            core::mem::forget(val);
-        }
-        contents
+        unsafe { std::slice::from_raw_parts(buffer.contents() as *const T, len) }
     }
 }
